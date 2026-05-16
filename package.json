@@ -1,0 +1,23 @@
+{
+  "name": "docs",
+  "version": "1.0.0",
+  "description": "Docs for WABeres",
+  "homepage": "https://github.com/WABeres/docs#readme",
+  "bugs": {
+    "url": "https://github.com/WABeres/docs/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WABeres/docs.git"
+  },
+  "license": "ISC",
+  "author": "Fredo Ronan",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "mint": "^4.2.565"
+  }
+}
