@@ -1,0 +1,500 @@
+openapi: 3.0.0
+info:
+  contact: {}
+  description: Dokumentasi REST API untuk berinteraksi dengan layanan WABeres
+    programmatically atau programmatically
+  title: WABeres (Unofficial WhatsApp API Gateway)
+  version: 0.0.1
+paths:
+  /api/v1/account/info:
+    get:
+      description: Anda bisa menggunakan route API ini untuk mengecek status akun anda
+        secara programmatically atau terprogram untuk tujuan otomasi renewal
+        misalnya
+      parameters:
+        - description: API Key anda
+          in: header
+          name: X-API-Key
+          required: true
+          schema:
+            type: string
+        - description: Timestamp generate otomatis secara terprogram/programmatically,
+            jangan manual
+          in: header
+          name: X-Timestamp
+          required: true
+          schema:
+            type: string
+        - description: Signature(METHOD + Path + timestamp + hashed(body))
+          in: header
+          name: X-Signature
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.AccountInfoResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+      summary: Mendapatkan informasi mengenai akun anda melalui API call
+      tags:
+        - Accounts
+  /api/v1/account/renew:
+    post:
+      description: >-
+        Anda bisa menggunakan route API ini untuk memperpanjang masa aktif plan
+        yang anda pilih sebelumnya secara programmatically atau secara
+        terprogram.
+
+        Jika di gabung dengan route /api/v1/account/info anda bisa mengotomasi renewal atau perpanjangan masa aktif anda sehingga sistem yang anda bangun bisa terjamin downtime nya.
+
+        Terdapat 2 metode pembayaran, yaitu ordinary payment dan crypto. Crypto akan menyusul.
+      parameters:
+        - description: API Key anda
+          in: header
+          name: X-API-Key
+          required: true
+          schema:
+            type: string
+        - description: Timestamp generate otomatis secara terprogram/programmatically,
+            jangan manual
+          in: header
+          name: X-Timestamp
+          required: true
+          schema:
+            type: string
+        - description: Signature(METHOD + Path + timestamp + hashed(body))
+          in: header
+          name: X-Signature
+          required: true
+          schema:
+            type: string
+        - description: Metode pembayaran (ordinary/crypto)
+          in: query
+          name: method
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.AccountRenewalResponse"
+        "400":
+          description: biasanya terkait dengan data yang harus di kirim itu tidak ada atau
+            hilang
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+        "403":
+          description: terkait dengan apakah akun yang bersangkutan dengan API Key masih
+            aktif atau tidak dan juga terkait apakah sudah boleh memperpanjang
+            atau belum
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+        "404":
+          description: terkait suatu data yang di kirim tidak di temukan dalam database
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+        "406":
+          description: terkait metode pembayaran yang tidak diterima
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+        "500":
+          description: internal server error, bukan anda
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+        "501":
+          description: terkait metode pembayaran yang belum di implementasikan
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+      summary: Renew atau memperpanjang masa aktif plan anda saat ini
+      tags:
+        - Accounts
+  /api/v1/devices/connect/qr:
+    post:
+      description: Anda bisa menggunakan route API ini untuk menautkan akun whatsapp anda
+      parameters:
+        - description: API Key anda
+          in: header
+          name: X-API-Key
+          required: true
+          schema:
+            type: string
+        - description: Timestamp generate otomatis secara terprogram/programmatically,
+            jangan manual
+          in: header
+          name: X-Timestamp
+          required: true
+          schema:
+            type: string
+        - description: Signature(METHOD + Path + timestamp + hashed(body))
+          in: header
+          name: X-Signature
+          required: true
+          schema:
+            type: string
+        - description: Device ID (bisa di dapatkan melalui dashboard)
+          in: header
+          name: X-Device-Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.DeviceConnectQRResponse"
+        "400":
+          description: biasanya terkait dengan data yang harus di kirim itu tidak ada atau
+            hilang
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+        "404":
+          description: terkait suatu data yang di kirim tidak di temukan dalam database
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+        "409":
+          description: device sudah connected sebelumnya, jadi request untuk menghasilkan
+            QR code di tolak
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+        "500":
+          description: internal server error, bukan anda
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+      summary: Menautkan WhatsApp dengan QR Code
+      tags:
+        - Devices
+  /api/v1/devices/disconnect:
+    post:
+      description: Anda bisa menggunakan route API ini untuk memutus tautan akun
+        whatsapp anda dengan sistem WABeres
+      parameters:
+        - description: API Key anda
+          in: header
+          name: X-API-Key
+          required: true
+          schema:
+            type: string
+        - description: Timestamp generate otomatis secara terprogram/programmatically,
+            jangan manual
+          in: header
+          name: X-Timestamp
+          required: true
+          schema:
+            type: string
+        - description: Signature(METHOD + Path + timestamp + hashed(body))
+          in: header
+          name: X-Signature
+          required: true
+          schema:
+            type: string
+        - description: Device ID (bisa di dapatkan melalui dashboard)
+          in: header
+          name: X-Device-Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.DeviceDisconnectResponse"
+        "400":
+          description: biasanya terkait dengan data yang harus di kirim itu tidak ada atau
+            hilang
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+        "404":
+          description: terkait suatu data yang di kirim tidak di temukan dalam database
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+        "409":
+          description: device sudah disconnected sebelumnya, jadi request untuk disconnect
+            di tolak
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+        "500":
+          description: internal server error, bukan anda
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+      summary: Memutus tautan akun WhatsApp
+      tags:
+        - Devices
+  /api/v1/devices/info:
+    get:
+      description: Anda bisa menggunakan route API ini untuk mendapatkan informasi
+        status perangkat berdasarkan id perangkat (device id)
+      parameters:
+        - description: API Key anda
+          in: header
+          name: X-API-Key
+          required: true
+          schema:
+            type: string
+        - description: Timestamp generate otomatis secara terprogram/programmatically,
+            jangan manual
+          in: header
+          name: X-Timestamp
+          required: true
+          schema:
+            type: string
+        - description: Signature(METHOD + Path + timestamp + hashed(body))
+          in: header
+          name: X-Signature
+          required: true
+          schema:
+            type: string
+        - description: Device ID (bisa di dapatkan melalui dashboard)
+          in: header
+          name: X-Device-Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.DeviceInfoResponse"
+        "400":
+          description: biasanya terkait dengan data yang harus di kirim itu tidak ada atau
+            hilang
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+        "404":
+          description: terkait suatu data yang di kirim tidak di temukan dalam database
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+        "500":
+          description: internal server error, bukan anda
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+      summary: Mendapatkan informasi perangkat
+      tags:
+        - Devices
+  /api/v1/messages/send:
+    post:
+      description: Anda bisa menggunakan route API ini untuk mengirim pesan whatsapp
+        programmatically atau secara terprogram menggunakan API. Anda bisa
+        memanfaatkannya untuk integrasi otomasi sistem anda. Contohnya seperti
+        sistem OTP, WA Broadcast, Bot dan masih banyak lagi
+      parameters:
+        - description: API Key anda
+          in: header
+          name: X-API-Key
+          required: true
+          schema:
+            type: string
+        - description: Timestamp generate otomatis secara terprogram/programmatically,
+            jangan manual
+          in: header
+          name: X-Timestamp
+          required: true
+          schema:
+            type: string
+        - description: Signature(METHOD + Path + timestamp + hashed(body))
+          in: header
+          name: X-Signature
+          required: true
+          schema:
+            type: string
+        - description: Device ID yang sudah connected
+          in: header
+          name: X-Device-Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/v1.SendMessageRequest"
+        description: Data Pesan yang ingin dikirim beserta nomor tujuan
+        required: true
+      responses:
+        "202":
+          description: Jika berhasil, request mengirim pesan akan di masukkan ke dalam
+            antrian yang bisa di track menggunakan job id
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.SendMessageResponse"
+        "400":
+          description: terkait dengan data yang di kirim tidak lengkap
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+        "403":
+          description: terkait dengan device yang belum connected atau kuota yang habis
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+        "404":
+          description: terkait dengan data yang di kirim tidak ada dalam database
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+        "500":
+          description: internal server error, bukan anda
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/v1.ApiErrResponse"
+      summary: Mengirim pesan WA (WhatsApp) melalui API call
+      tags:
+        - Messages
+servers:
+  - url: https://waberes.fredoronan.web.id
+components:
+  schemas:
+    v1.AccountInfoResponse:
+      properties:
+        days_left:
+          example: 30
+          type: integer
+        expiry_date:
+          example: ""
+          type: string
+        initial_quota:
+          example: "1"
+          type: string
+        plan:
+          type: string
+        plan_type:
+          example: TIME_BASED
+          type: string
+        remaining_quota:
+          example: "1"
+          type: string
+        session_id:
+          example: <random_uuid>
+          type: string
+        start_date:
+          example: ""
+          type: string
+        user_id:
+          example: user_jkjfuiwpoiuroiqt61276
+          type: string
+      type: object
+    v1.AccountRenewalResponse:
+      properties:
+        description:
+          example: "Account renewal for Plan: <your_plan> | UserID=<your_user_id> is
+            successfully created, waiting for payment..."
+          type: string
+        payment_url:
+          example: https://paymentgateway.com/payment/ref=DGHFYUH8787967
+          type: string
+      type: object
+    v1.ApiErrResponse:
+      properties:
+        code:
+          example: error code (sebatas kode error saja)
+          type: string
+        error:
+          example: verbosed error message (keterangan error yang lebih detail)
+          type: string
+      type: object
+    v1.DeviceConnectQRResponse:
+      properties:
+        qr_code:
+          example: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA...
+          type: string
+        qr_duration:
+          example: 30
+          type: integer
+      type: object
+    v1.DeviceDisconnectResponse:
+      properties:
+        device_id:
+          example: 01YAUTFIUYASDFIAUSY
+          type: string
+        msg:
+          example: device has successfully disconnected
+          type: string
+      type: object
+    v1.DeviceInfoResponse:
+      properties:
+        created_at:
+          type: string
+        device_id:
+          example: 01GAHGDYTRIUGIDUYFI
+          type: string
+        state:
+          example: disconnected
+          type: string
+      type: object
+    v1.SendMessageRequest:
+      properties:
+        message:
+          example: Test Send Message from API
+          type: string
+        phone_destination:
+          example: "6281234567890"
+          type: string
+      required:
+        - message
+        - phone_destination
+      type: object
+    v1.SendMessageResponse:
+      properties:
+        job_id:
+          example: adfs892536
+          type: string
+        msg:
+          example: send message request enqueued!
+          type: string
+      type: object

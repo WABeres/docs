@@ -32,8 +32,15 @@
             "tab": "Referensi API",
             "groups": [
               {
-                "group": "Endpoint",
-                "pages": ["id/api/account", "id/api/messages"]
+                "group": "Intro",
+                "pages": ["id/api/introduction"]
+              },
+              {
+                "group": "Endpoints",
+                "openapi": {
+                  "source": "/openapi.yaml",
+                  "directory": "id/api"
+                }
               }
             ]
           }
