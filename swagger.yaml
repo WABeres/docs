@@ -1,4 +1,22 @@
 definitions:
+  v1.AccountCurrentPlansResponse:
+    properties:
+      duration:
+        example: 7 hari
+        type: string
+      plan_name:
+        example: starter
+        type: string
+      plan_type:
+        example: TIME_BASED
+        type: string
+      price:
+        example: 50000
+        type: integer
+      quota:
+        example: Unlimited
+        type: string
+    type: object
   v1.AccountInfoResponse:
     properties:
       days_left:
@@ -138,7 +156,42 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/v1.ApiErrResponse'
-      summary: Mendapatkan informasi mengenai akun anda melalui API call
+      summary: Informasi Akun Anda
+      tags:
+      - Accounts
+  /api/v1/account/planchoices/latest:
+    get:
+      consumes:
+      - application/json
+      description: Anda bisa menggunakan route API ini untuk mengecek harga terbaru
+        dari plan - plan yang tersedia
+      parameters:
+      - description: API Key anda
+        in: header
+        name: X-API-Key
+        required: true
+        type: string
+      - description: Timestamp generate otomatis secara terprogram/programmatically,
+          jangan manual
+        in: header
+        name: X-Timestamp
+        required: true
+        type: string
+      - description: Signature(METHOD + Path + timestamp + hashed(body))
+        in: header
+        name: X-Signature
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.AccountCurrentPlansResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.ApiErrResponse'
+      summary: Informasi Harga terbaru setiap plan
       tags:
       - Accounts
   /api/v1/account/renew:
@@ -203,7 +256,7 @@ paths:
           description: terkait metode pembayaran yang belum di implementasikan
           schema:
             $ref: '#/definitions/v1.ApiErrResponse'
-      summary: Renew atau memperpanjang masa aktif plan anda saat ini
+      summary: Perpanjang otomatis akun anda
       tags:
       - Accounts
   /api/v1/devices/connect/qr:
@@ -360,7 +413,7 @@ paths:
           description: internal server error, bukan anda
           schema:
             $ref: '#/definitions/v1.ApiErrResponse'
-      summary: Mendapatkan informasi perangkat
+      summary: Informasi Perangkat
       tags:
       - Devices
   /api/v1/messages/send:
@@ -422,7 +475,7 @@ paths:
           description: internal server error, bukan anda
           schema:
             $ref: '#/definitions/v1.ApiErrResponse'
-      summary: Mengirim pesan WA (WhatsApp) melalui API call
+      summary: Mengirim Pesan WhatsApp
       tags:
       - Messages
 swagger: "2.0"

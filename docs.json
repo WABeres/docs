@@ -25,6 +25,12 @@
                   "id/index",
                   "id/panduan"
                 ]
+              },
+              {
+                "group": "Informasi Pembaruan",
+                "pages": [
+                  "id/pembaruan"
+                ]
               }
             ]
           },
