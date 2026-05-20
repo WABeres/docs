@@ -1,46 +1,57 @@
 ---
 title: "Apa itu WABeres?"
-description: "Integrasikan WhatsApp untuk proyekmu - langsung pakai, tanpa proses signup."
+description: "WhatsApp API untuk developer — bayar sekali, tanpa registrasi, langsung pakai."
 ---
 
-WABeres berjalan di atas protokol WhatsApp Web. Anda bisa langsung mengintegrasikan whatsapp ke sistem anda hanya dengan scan qr code persis seperti ketika anda 
-menautkan akun whatsapp anda ke whatsapp web. Setelah berhasil terhubung anda akan mendapatkan fitur seperti auto reply, REST API dan Webhook.
+WABeres adalah unofficial WhatsApp API gateway yang berjalan di atas protokol WhatsApp Web. 
+Hubungkan nomor WhatsApp kamu dengan scan QR code — persis seperti WhatsApp Web — 
+dan langsung dapatkan akses ke REST API, Webhook, dan Auto Reply.
 
 <Note>
-Hanya ingin mencoba saja? Atau sebenarnya hanya butuh sedikit saja?
-WABeres menyediakan pembelian secara eceran (custom) berdasarkan jumlah pesan dengan harga mulai dari Rp. 10.000 saja.
+  Hanya butuh sedikit? WABeres menyediakan paket eceran berdasarkan jumlah pesan 
+  mulai dari **Rp 10.000** tanpa masa kadaluwarsa.
 </Note>
 
-## Apa saja yang anda dapatkan?
-1. **Tanpa akun, Tanpa registrasi, Tanpa login**. WABeres adalah platform integrasi whatsapp yang sama sekali tidak mengharuskan pengguna untuk melakukan registrasi
-    akun terlebih dahulu pada platform. Hal ini bertujuan untuk mempermudah dan mempercepat proses pemenuhan kebutuhan integrasi whatsapp pada sistem anda serta
-    mendukung penuh privasi pengguna dengan tidak menyimpan informasi terkait pengguna sama sekali. 
-    Pelajari bagaimana cara kerjanya [disini](https://waberes.fredoronan.web.id#how)
-2. **Bot/Chatbot AI/LLM**. Pada semua plan (termasuk versi eceran/custom), WABeres menyediakan fitur REST API + Webhook natively atau secara default. Anda bisa memanfaatkan fitur ini
-    untuk membuat smart system anda sendiri dengan sangat mudah dan cepat dengan mengintegrasikan akun whatsapp anda seperti anda login ke whatsapp web. Semudah itu!
-3. **Pemberitahuan singkat**. WABeres juga menyediakan pengaturan auto reply pada semua plan (termasuk versi eceran/custom). Fitur ini dapat anda memanfaatkan
-    terutama bagi anda yang membutuhkan pesan balasan otomatis ketika toko libur atau tutup dan berbagai kebutuhan balasan otomatis lainnya.
-4. **Disposables tapi renewable**. Sudah selesai? Tinggalkan saja. WABeres akan otomatis menghapus akun dashboard yang di berikan setelah masa aktif kadaluwarsa
-    atau setelah kuota sudah habis. Hal ini dilakukan dengan tujuan untuk merawat server kami dan sekaligus mendukung privasi pengguna. **Namun**, jika anda memilih
-    paket dengan tipe masa aktif (yang memiliki kadaluwarsa dan bukan berupa kuota) anda dapat **memperpanjang masa aktif** akun anda melalui API selama belum expired.
+## Yang kamu dapatkan
 
-> _Walaupun WABeres adalah platform tanpa akun, tanpa registrasi dan tanpa login, log aktivitas sistem akan tetap di simpan untuk keperluan identifikasi
-jika terdapat masalah pada pengalaman anda selama menggunakan platform ini. Hal ini dilakukan untuk mempertahankan kenyamanan anda dalam menggunakan WABeres
-untuk sistem yang sedang anda bangun._
+**Tanpa registrasi.** Tidak ada akun, tidak ada form signup. Sistem otomatis membuat 
+dashboard untukmu sesaat setelah pembayaran. Privasi pengguna dijaga penuh — tidak ada 
+data identitas yang disimpan. [Pelajari cara kerjanya →](https://waberes.fredoronan.web.id#how)
 
+**REST API + Webhook native.** Tersedia di semua paket termasuk eceran. Cocok untuk 
+membangun chatbot, integrasi AI/LLM, sistem notifikasi, atau otomasi apapun yang butuh 
+WhatsApp sebagai channel-nya.
 
-## Hanya ada 3 hal penting yang perlu di perhatikan
+**Auto Reply.** Atur pesan balasan otomatis langsung dari dashboard — untuk toko tutup atau skenario apapun yang kamu butuhkan.
 
-**Unique URL Dashboard** anda adalah pusat kontrol akun anda. Akun akan digenerate otomatis oleh sistem. Anda tinggal mengunjungi url tersebut
-untuk melihat semua aktivitas akun, riwayat transaksi, hingga log API call anda bisa dimonitor di sini.
+**Disposable tapi renewable.** Selesai pakai? Tinggalkan saja. Akun dihapus otomatis 
+setelah kuota habis atau masa aktif berakhir. Untuk paket durasi, kamu bisa perpanjang 
+masa aktif via API selama dalam rentang waktu 7 hari sebelum expired.
 
-**API Key**, seperti layanan API pada umumnya, anda harus menyimpan dan menyertakan API key ini di setiap request yang anda lakukan.
+<Info>
+  WABeres tidak menyimpan data identitas pengguna, namun log aktivitas sistem tetap 
+  disimpan untuk keperluan debugging jika ada masalah selama kamu menggunakan platform ini.
+</Info>
 
-**Secret Key** digunakan untuk memverifikasi setiap request yang dilakukan baik dari anda atau webhook yang dikirim dari server ke sistem anda.
+## 3 hal yang perlu kamu simpan
 
-> Semua ini akan di cantumkan dalam dokumen PDF invoice pembayaran sesaat setelah anda melakukan order sesuai paket yang anda pilih.
+Setelah order, kamu akan menerima **invoice PDF** berisi tiga hal ini:
 
-## Lanjut
-<Card title="Panduan" icon="rocket" href="/id/panduan" horizontal>
-    Mulai integrasi WhatsApp dalam hitungan menit
+**Dashboard URL** — URL unik yang menjadi pusat kontrol akunmu. Pantau log API call, 
+riwayat transaksi, dan aktivitas akun dari sini.
+
+**API Key** — Sertakan di setiap request ke WABeres API.
+
+**Secret Key** — Digunakan untuk verifikasi signature di setiap request dan validasi 
+webhook yang dikirim server ke sistemmu.
+
+<Warning>
+  Simpan ketiganya di tempat yang aman. Dashboard URL berfungsi seperti password — 
+  siapapun yang memilikinya bisa mengakses akunmu.
+</Warning>
+
+## Selanjutnya
+
+<Card title="Panduan Memulai" icon="rocket" href="/id/panduan" horizontal>
+  Dari order hingga kirim pesan pertama — dalam hitungan menit
 </Card>
