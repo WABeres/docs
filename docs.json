@@ -27,6 +27,12 @@
                 ]
               },
               {
+                "group": "Kebijakan Privasi",
+                "pages": [
+                  "id/kebijakan_privasi"
+                ]
+              },
+              {
                 "group": "Informasi Pembaruan",
                 "pages": [
                   "id/pembaruan"

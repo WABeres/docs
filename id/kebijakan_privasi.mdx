@@ -1,0 +1,107 @@
+---
+title: "Kebijakan Privasi"
+description: "Kebijakan privasi WABeres — bagaimana kami mengelola data kamu."
+---
+
+_Terakhir diperbarui: Mei 2026_
+
+WABeres adalah layanan unofficial WhatsApp API gateway yang dioperasikan secara independen dan tidak berafiliasi dengan WhatsApp Inc. maupun Meta Platforms, Inc. Kebijakan privasi ini menjelaskan data apa yang kami kumpulkan, bagaimana kami menggunakannya, dan hak kamu atas data tersebut.
+
+---
+
+## 1. Data yang Kami Kumpulkan
+
+WABeres dirancang sebagai platform tanpa akun. Kami tidak mengumpulkan nama, alamat email, atau informasi identitas pribadi apapun dari pengguna.
+
+Data yang kami simpan di server meliputi:
+
+**Data sesi & integrasi**
+- Nomor WhatsApp yang dihubungkan ke platform
+- Sesi WhatsApp aktif yang digunakan untuk koneksi API
+
+**Log sistem**
+- Log API call (endpoint yang diakses, timestamp, status response)
+- Log aktivitas akun (login dashboard, perubahan pengaturan)
+
+**Data transaksi**
+- Riwayat pembelian paket (jenis paket, tanggal, status pembayaran)
+- Data ini diproses melalui payment gateway **Duitku** — kami tidak menyimpan informasi kartu kredit atau rekening bank kamu di server kami
+
+---
+
+## 2. Bagaimana Kami Menggunakan Data
+
+Data yang dikumpulkan digunakan semata-mata untuk:
+
+- Mengoperasikan layanan API dan dashboard kamu
+- Memverifikasi status paket aktif dan kuota pesan
+- Mendiagnosis masalah teknis berdasarkan log aktivitas
+- Memproses dan memvalidasi transaksi pembayaran
+
+Kami tidak menjual, menyewakan, atau membagikan data kamu kepada pihak ketiga untuk keperluan pemasaran atau iklan.
+
+---
+
+## 3. Penyimpanan & Penghapusan Data
+
+WABeres menerapkan kebijakan penghapusan data otomatis:
+
+- Ketika **kuota pesan habis**, data sesi dihapus otomatis setiap tengah malam melalui proses otomatis di server
+- Ketika **masa aktif paket durasi berakhir**, data sesi dihapus dengan mekanisme yang sama
+- Data yang dihapus bersifat **permanen** — tidak dapat dipulihkan
+
+Riwayat transaksi disimpan selama diperlukan untuk keperluan pencatatan keuangan sesuai ketentuan yang berlaku.
+
+---
+
+## 4. Keamanan Data
+
+Kami menerapkan beberapa lapisan keamanan untuk melindungi data kamu:
+
+- Setiap request API diverifikasi menggunakan **HMAC-SHA256 signature**
+- API key disimpan dalam bentuk **hash SHA-256** — bukan plaintext
+- Rate limiting diterapkan per API key untuk mencegah penyalahgunaan
+- Proteksi replay attack menggunakan validasi timestamp pada setiap request
+
+Meski demikian, tidak ada sistem yang dapat menjamin keamanan 100%. Kamu bertanggung jawab untuk menjaga kerahasiaan **Dashboard URL**, **API Key**, dan **Secret Key** yang diberikan setelah pembelian.
+
+---
+
+## 5. Layanan Pihak Ketiga
+
+WABeres menggunakan layanan pihak ketiga berikut dalam operasionalnya:
+
+**Duitku** — digunakan sebagai payment gateway untuk memproses transaksi pembayaran. Data pembayaran kamu tunduk pada [Kebijakan Privasi Duitku](https://duitku.com/privacy-policy).
+
+WABeres adalah layanan **unofficial** yang dibangun di atas protokol WhatsApp Web dan tidak berafiliasi dengan WhatsApp Inc. maupun Meta Platforms, Inc. Penggunaan layanan ini sepenuhnya di luar tanggung jawab kedua perusahaan tersebut.
+
+---
+
+## 6. Lokasi Data
+
+Seluruh data yang dikumpulkan disimpan di server yang berlokasi di **Indonesia**. Tidak ada transfer data ke luar wilayah Indonesia.
+
+---
+
+## 7. Hak Pengguna
+
+Karena WABeres tidak mengumpulkan data identitas pribadi, sebagian besar hak pengguna terpenuhi secara by-design. Namun jika kamu memiliki pertanyaan terkait data yang tersimpan di sistem kami, kamu dapat menghubungi kami melalui kontak yang tercantum di bawah.
+
+Penghapusan data sesi dapat dilakukan dengan membiarkan paket berakhir secara alami — sistem akan menghapus data secara otomatis.
+
+---
+
+## 8. Perubahan Kebijakan
+
+Kami dapat memperbarui kebijakan privasi ini sewaktu-waktu. Perubahan signifikan akan dicantumkan dengan memperbarui tanggal *"Terakhir diperbarui"* di bagian atas halaman ini. Penggunaan layanan secara berkelanjutan setelah perubahan dianggap sebagai persetujuan atas kebijakan yang diperbarui.
+
+---
+
+## 9. Kontak
+
+Jika kamu memiliki pertanyaan terkait kebijakan privasi ini, silakan hubungi:
+
+**WABeres**  
+Dioperasikan oleh Fredo Ronan  
+Indonesia  
+Email: _fredocode06@gmail.com_
