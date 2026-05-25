@@ -1,0 +1,110 @@
+---
+title: "NodeJS SDK"
+description: "SDK resmi WABeres untuk JavaScript/TypeScript — tanpa perlu implementasi signature manual."
+---
+
+SDK ini memudahkan integrasi dengan WABeres API tanpa perlu mengurus autentikasi
+dan pembuatan signature secara manual.
+
+<Warning>
+  SDK belum dipublikasikan ke npm. Ikuti panduan di bawah untuk menggunakannya
+  secara lokal di proyekmu.
+</Warning>
+
+## Instalasi (Local Development)
+
+**1. Clone repository SDK**
+
+```bash
+git clone https://github.com/WABeres/waberes-js.git
+cd waberes-js
+```
+
+**2. Jalankan setup**
+
+```bash
+npm run setup
+```
+
+Perintah ini akan menjalankan `npm install`, `npm run build`, dan `npm link` secara otomatis.
+
+**3. Link ke proyekmu**
+
+Navigasi ke direktori proyek kamu, lalu jalankan:
+
+```bash
+npm link waberes-js
+```
+
+<Warning>
+  Jalankan `npm link waberes-js` setiap kali kamu menjalankan `npm install`
+  di proyekmu — perintah `npm install` akan menghapus link yang sudah ada
+  dari `node_modules`.
+</Warning>
+
+## Penggunaan Dasar
+
+```javascript
+import { createWABeresClient } from "waberes-js";
+
+const client = createWABeresClient({
+  apiKey: "your_api_key",
+  secretKey: "your_secret_key",
+});
+```
+
+Setelah client dibuat, kamu bisa langsung mengeksplorasi method yang tersedia
+melalui autocomplete di editor kamu.
+
+## Update SDK
+
+Ketika ada update pada SDK, jalankan perintah berikut di direktori SDK:
+
+```bash
+cd waberes-js
+git pull
+npm run build
+```
+
+Tidak perlu menjalankan `npm link` ulang setelah update.
+
+## Menjalankan Test (untuk kontributor)
+
+Menjalankan test per file:
+
+```bash
+npm run test
+```
+
+Menjalankan test dengan laporan coverage:
+
+```bash
+npm run test:coverage
+```
+
+## Tips
+
+Sangat di sarankan untuk memanggil method/fungsi yang tersedia dalam sebuah `try/catch` seperti berikut:
+
+```typescript
+import { APIError, createWABeresClient } from "waberes-js";
+
+// create client
+const client = createWABeresClient({
+  apiKey: "your_api_key",
+  secretKey: "your_secret_key",
+});
+
+// penggunaan method/fungsinya dengan try/catch sangat di sarankan
+try {
+    const result = await client.messages.send({
+        message: "Test Message created from SDK",
+        phone_destination: "62812xxxxxxxx"
+    }, "device_id_kamu");
+
+    console.log(result);
+}catch(err) {
+    const error = err as APIError;
+    console.log(error.message); // sehingga pesan error dapat terbaca dengan jelas
+}
+```

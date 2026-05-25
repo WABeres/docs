@@ -47,7 +47,7 @@ WABeres mengirim payload dalam format JSON via HTTP `POST` ke URL webhook kamu.
 
 ## Verifikasi Signature
 
-Setiap request webhook menyertakan dua header tambahan:
+Setiap request webhook menyertakan tiga header tambahan:
 
 | Header | Keterangan |
 |---|---|
@@ -153,16 +153,16 @@ memakan waktu lama, koneksi bisa timeout dan WABeres akan menganggap pengiriman 
 **Selalu verifikasi signature.** Jangan proses payload dari request yang 
 signature-nya tidak valid — ini bisa jadi indikasi request palsu dari pihak lain.
 
-**Gunakan `message_id` sebagai idempotency key.** Simpan ID pesan yang sudah 
+**Gunakan `chat_id` sebagai idempotency key.** Simpan ID pesan yang sudah 
 diproses untuk menghindari duplikasi saat retry terjadi.
 
 ## Selanjutnya
 
-<CardGroup cols={2}>
+<CardGroup cols={1}>
   <Card title="Kirim Pesan" icon="paper-plane" href="/id/api/messages/mengirim-pesan-whatsapp">
     Kirim pesan teks ke nomor WhatsApp tujuan
   </Card>
-  <Card title="Monitor Akses" icon="chart-bar" href="#">
+  {/* <Card title="Monitor Akses" icon="chart-bar" href="#">
     Pantau log webhook gagal di dashboard (lihat PDF invoice)
-  </Card>
+  </Card> */}
 </CardGroup>

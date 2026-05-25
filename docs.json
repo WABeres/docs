@@ -51,6 +51,12 @@
                 ]
               },
               {
+                "group": "SDK",
+                "pages": [
+                  "id/api/sdk-nodejs"
+                ]
+              },
+              {
                 "group": "Endpoints",
                 "openapi": {
                   "source": "/openapi.yaml",

@@ -15,7 +15,7 @@ https://waberes.fredoronan.web.id
 
 ## SDK
 
-WABeres menyediakan SDK resmi untuk **JavaScript/TypeScript** yang dapat langsung 
+WABeres menyediakan SDK resmi untuk **NodeJS** yang dapat langsung 
 kamu gunakan tanpa perlu mengimplementasikan signature dan autentikasi secara manual.
 
 <Note>
@@ -23,7 +23,7 @@ kamu gunakan tanpa perlu mengimplementasikan signature dan autentikasi secara ma
   repository resmi WABeres. Repository bersifat **open source**, kontribusi di persilahkan.
 </Note>
 
-<Card title="WABeres JS/TS SDK" icon="github" href="https://github.com/WABeres/waberes-js" horizontal>
+<Card title="WABeres NodeJS SDK" icon="github" href="https://github.com/WABeres/waberes-js" horizontal>
   Lihat repository, instalasi, dan contoh penggunaan SDK
 </Card>
 
@@ -40,7 +40,6 @@ Setiap request ke WABeres API wajib menyertakan tiga header berikut:
 | `X-Api-Key` | API key kamu yang tertera di dokumen PDF |
 | `X-Timestamp` | Unix timestamp saat request dibuat (detik) |
 | `X-Signature` | HMAC-SHA256 signature dari request |
-| `X-Device-Id` | Device ID sesi WhatsApp yang aktif |
 
 <Info>
   Timestamp yang dikirim tidak boleh berbeda lebih dari **5 menit** dari waktu 
