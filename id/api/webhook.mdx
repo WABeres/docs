@@ -1,0 +1,168 @@
+---
+title: "Webhook"
+description: "Terima pesan masuk WhatsApp secara real-time ke sistemmu via webhook."
+---
+
+Webhook memungkinkan WABeres mengirim notifikasi secara real-time ke server kamu 
+setiap kali ada pesan masuk. Kamu tidak perlu polling API secara berkala — 
+WABeres akan langsung push event ke URL yang kamu daftarkan.
+
+## Setup Webhook URL
+
+Daftarkan URL webhook kamu melalui dashboard di bagian **Pengaturan Webhook**. URL yang didaftarkan harus:
+
+- Dapat diakses publik dari internet
+- Mendukung method `POST`
+- Mengembalikan HTTP status `200` sebagai tanda berhasil menerima event
+
+<Warning>
+  Webhook tidak akan berfungsi jika URL kamu hanya bisa diakses secara lokal 
+  (localhost). Gunakan layanan tunnel seperti ngrok atau cloudflared saat 
+  development.
+</Warning>
+
+## Struktur Payload
+
+WABeres mengirim payload dalam format JSON via HTTP `POST` ke URL webhook kamu.
+
+### Pesan Masuk (`incoming_message`)
+
+```json
+{
+  "message": "halo ada yang bisa di bantu?",
+  "chat_id": "ABCDEF123456",
+  "from_name": "~someone",
+  "from": "628764567362@s.whatsapp.net",
+  "timestamp": "1778577555"
+}
+```
+
+| Field | Tipe | Keterangan |
+|---|---|---|
+| `message` | `string` | Isi pesan yang diterima |
+| `chat_id` | `string` | ID unik pesan dari WhatsApp |
+| `from_name` | `string` | Nama akun whatsapp pengirim |
+| `from` | `string` | Nomor pengirim dalam format whatsapp `<nomor_internasional>@s.whatsapp.net` |
+| `timestamp` | `string` | Unix timestamp saat pesan diterima |
+
+## Verifikasi Signature
+
+Setiap request webhook menyertakan dua header tambahan:
+
+| Header | Keterangan |
+|---|---|
+| `X-Webhook-ID` | ID unik job pengiriman webhook |
+| `X-Timestamp` | Unix timestamp saat webhook dikirim |
+| `X-Signature` | HMAC-SHA256 signature untuk verifikasi |
+
+Signature webhook dibuat dengan cara:
+
+`HMAC-SHA256(secret_key, webhook_id + timestamp + raw_body)`
+
+Berbeda dengan signature API request, body pada webhook **tidak di-hash SHA256 
+terlebih dahulu** — body JSON ditulis langsung ke dalam HMAC.
+
+Contoh verifikasi di Go:
+
+```go
+func verifyWebhook(r *http.Request, secretKey string) bool {
+    webhookID := r.Header.Get("X-Webhook-Id")
+    timestamp := r.Header.Get("X-Timestamp")
+    receivedSig := r.Header.Get("X-Signature")
+
+    body, _ := io.ReadAll(r.Body)
+
+    mac := hmac.New(sha256.New, []byte(secretKey))
+    mac.Write([]byte(webhookID + timestamp))
+    mac.Write(body)
+    expectedSig := hex.EncodeToString(mac.Sum(nil))
+
+    return hmac.Equal([]byte(receivedSig), []byte(expectedSig))
+}
+```
+
+Contoh verifikasi di JavaScript/TypeScript:
+
+```typescript
+import crypto from "crypto";
+
+function verifyWebhook(
+  req: Request,
+  rawBody: Buffer,
+  secretKey: string
+): boolean {
+  const webhookId = req.headers["x-webhook-id"] as string;
+  const timestamp = req.headers["x-timestamp"] as string;
+  const receivedSig = req.headers["x-signature"] as string;
+
+  const mac = crypto.createHmac("sha256", secretKey);
+  mac.update(webhookId + timestamp);
+  mac.update(rawBody);
+  const expectedSig = mac.digest("hex");
+
+  return crypto.timingSafeEqual(
+    Buffer.from(receivedSig),
+    Buffer.from(expectedSig)
+  );
+}
+```
+
+<Warning>
+  Gunakan **raw body** (Buffer/byte array) saat verifikasi — jangan parse 
+  JSON terlebih dahulu. Me-parse lalu stringify ulang bisa menghasilkan 
+  body yang berbeda dan menyebabkan verifikasi selalu gagal.
+</Warning>
+
+<Warning>
+  Selalu gunakan **`timingSafeEqual`** atau fungsi perbandingan yang 
+  timing-safe saat membandingkan signature. Perbandingan string biasa 
+  (`===`) rentan terhadap timing attack.
+</Warning>
+
+## Mekanisme Retry
+
+Jika server kamu tidak mengembalikan HTTP `200`, WABeres akan otomatis 
+mencoba mengirim ulang event hingga **5 kali** dengan jeda antar retry 
+menggunakan **random jitter** — interval acak untuk menghindari thundering 
+herd ke servermu.
+
+```
+Retry 1 → jeda acak
+Retry 2 → jeda acak
+Retry 3 → jeda acak
+Retry 4 → jeda acak
+Retry 5 → jeda acak → event dianggap gagal
+```
+
+Jika seluruh retry habis dan event tetap tidak berhasil diterima, event 
+tersebut akan dicatat sebagai **gagal** dan dapat dilihat di dashboard 
+pada tab **Monitor Akses**.
+
+<Info>
+  Pastikan endpoint webhook kamu idempotent — artinya menerima event yang 
+  sama lebih dari sekali tidak menyebabkan duplikasi data di sistemmu, 
+  karena retry dapat mengirim payload yang identik.
+</Info>
+
+## Best Practices
+
+**Respond cepat, proses belakangan.** Kembalikan HTTP `200` sesegera mungkin 
+setelah menerima webhook, lalu proses payload secara async. Jika pemrosesan 
+memakan waktu lama, koneksi bisa timeout dan WABeres akan menganggap pengiriman gagal.
+
+**Selalu verifikasi signature.** Jangan proses payload dari request yang 
+signature-nya tidak valid — ini bisa jadi indikasi request palsu dari pihak lain.
+
+**Gunakan `message_id` sebagai idempotency key.** Simpan ID pesan yang sudah 
+diproses untuk menghindari duplikasi saat retry terjadi.
+
+## Selanjutnya
+
+<CardGroup cols={2}>
+  <Card title="Kirim Pesan" icon="paper-plane" href="/id/api/messages/mengirim-pesan-whatsapp">
+    Kirim pesan teks ke nomor WhatsApp tujuan
+  </Card>
+  <Card title="Monitor Akses" icon="chart-bar" href="#">
+    Pantau log webhook gagal di dashboard (lihat PDF invoice)
+  </Card>
+</CardGroup>

@@ -64,6 +64,86 @@ definitions:
       error:
         example: verbosed error message (keterangan error yang lebih detail)
         type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  v1.ApiSuccessResponse-v1_AccountCurrentPlansResponse:
+    properties:
+      data:
+        $ref: '#/definitions/v1.AccountCurrentPlansResponse'
+      message:
+        example: berhasil melakukan sesuatu
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  v1.ApiSuccessResponse-v1_AccountInfoResponse:
+    properties:
+      data:
+        $ref: '#/definitions/v1.AccountInfoResponse'
+      message:
+        example: berhasil melakukan sesuatu
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  v1.ApiSuccessResponse-v1_AccountRenewalResponse:
+    properties:
+      data:
+        $ref: '#/definitions/v1.AccountRenewalResponse'
+      message:
+        example: berhasil melakukan sesuatu
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  v1.ApiSuccessResponse-v1_DeviceConnectQRResponse:
+    properties:
+      data:
+        $ref: '#/definitions/v1.DeviceConnectQRResponse'
+      message:
+        example: berhasil melakukan sesuatu
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  v1.ApiSuccessResponse-v1_DeviceDisconnectResponse:
+    properties:
+      data:
+        $ref: '#/definitions/v1.DeviceDisconnectResponse'
+      message:
+        example: berhasil melakukan sesuatu
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  v1.ApiSuccessResponse-v1_DeviceInfoResponse:
+    properties:
+      data:
+        $ref: '#/definitions/v1.DeviceInfoResponse'
+      message:
+        example: berhasil melakukan sesuatu
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  v1.ApiSuccessResponse-v1_SendMessageResponse:
+    properties:
+      data:
+        $ref: '#/definitions/v1.SendMessageResponse'
+      message:
+        example: berhasil melakukan sesuatu
+        type: string
+      success:
+        example: true
+        type: boolean
     type: object
   v1.DeviceConnectQRResponse:
     properties:
@@ -78,9 +158,6 @@ definitions:
     properties:
       device_id:
         example: 01YAUTFIUYASDFIAUSY
-        type: string
-      msg:
-        example: device has successfully disconnected
         type: string
     type: object
   v1.DeviceInfoResponse:
@@ -110,9 +187,6 @@ definitions:
     properties:
       job_id:
         example: adfs892536
-        type: string
-      msg:
-        example: send message request enqueued!
         type: string
     type: object
 host: https://waberes.fredoronan.web.id
@@ -151,7 +225,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/v1.AccountInfoResponse'
+            $ref: '#/definitions/v1.ApiSuccessResponse-v1_AccountInfoResponse'
         "500":
           description: Internal Server Error
           schema:
@@ -186,7 +260,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/v1.AccountCurrentPlansResponse'
+            $ref: '#/definitions/v1.ApiSuccessResponse-v1_AccountCurrentPlansResponse'
         "500":
           description: Internal Server Error
           schema:
@@ -228,7 +302,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/v1.AccountRenewalResponse'
+            $ref: '#/definitions/v1.ApiSuccessResponse-v1_AccountRenewalResponse'
         "400":
           description: biasanya terkait dengan data yang harus di kirim itu tidak
             ada atau hilang
@@ -291,7 +365,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/v1.DeviceConnectQRResponse'
+            $ref: '#/definitions/v1.ApiSuccessResponse-v1_DeviceConnectQRResponse'
         "400":
           description: biasanya terkait dengan data yang harus di kirim itu tidak
             ada atau hilang
@@ -345,7 +419,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/v1.DeviceDisconnectResponse'
+            $ref: '#/definitions/v1.ApiSuccessResponse-v1_DeviceDisconnectResponse'
         "400":
           description: biasanya terkait dengan data yang harus di kirim itu tidak
             ada atau hilang
@@ -399,7 +473,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/v1.DeviceInfoResponse'
+            $ref: '#/definitions/v1.ApiSuccessResponse-v1_DeviceInfoResponse'
         "400":
           description: biasanya terkait dengan data yang harus di kirim itu tidak
             ada atau hilang
@@ -457,7 +531,7 @@ paths:
           description: Jika berhasil, request mengirim pesan akan di masukkan ke dalam
             antrian yang bisa di track menggunakan job id
           schema:
-            $ref: '#/definitions/v1.SendMessageResponse'
+            $ref: '#/definitions/v1.ApiSuccessResponse-v1_SendMessageResponse'
         "400":
           description: terkait dengan data yang di kirim tidak lengkap
           schema:

@@ -45,7 +45,10 @@
             "groups": [
               {
                 "group": "Intro",
-                "pages": ["id/api/introduction"]
+                "pages": [
+                  "id/api/introduction",
+                  "id/api/webhook"
+                ]
               },
               {
                 "group": "Endpoints",

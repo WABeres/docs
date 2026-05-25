@@ -37,7 +37,7 @@ paths:
           content:
             "*/*":
               schema:
-                $ref: "#/components/schemas/v1.AccountInfoResponse"
+                $ref: "#/components/schemas/v1.ApiSuccessResponse-v1_AccountInfoResponse"
         "500":
           description: Internal Server Error
           content:
@@ -77,7 +77,8 @@ paths:
           content:
             "*/*":
               schema:
-                $ref: "#/components/schemas/v1.AccountCurrentPlansResponse"
+                $ref: "#/components/schemas/v1.ApiSuccessResponse-v1_AccountCurrentPlansRespons\
+                  e"
         "500":
           description: Internal Server Error
           content:
@@ -129,7 +130,7 @@ paths:
           content:
             "*/*":
               schema:
-                $ref: "#/components/schemas/v1.AccountRenewalResponse"
+                $ref: "#/components/schemas/v1.ApiSuccessResponse-v1_AccountRenewalResponse"
         "400":
           description: biasanya terkait dengan data yang harus di kirim itu tidak ada atau
             hilang
@@ -207,7 +208,7 @@ paths:
           content:
             "*/*":
               schema:
-                $ref: "#/components/schemas/v1.DeviceConnectQRResponse"
+                $ref: "#/components/schemas/v1.ApiSuccessResponse-v1_DeviceConnectQRResponse"
         "400":
           description: biasanya terkait dengan data yang harus di kirim itu tidak ada atau
             hilang
@@ -273,7 +274,7 @@ paths:
           content:
             "*/*":
               schema:
-                $ref: "#/components/schemas/v1.DeviceDisconnectResponse"
+                $ref: "#/components/schemas/v1.ApiSuccessResponse-v1_DeviceDisconnectResponse"
         "400":
           description: biasanya terkait dengan data yang harus di kirim itu tidak ada atau
             hilang
@@ -339,7 +340,7 @@ paths:
           content:
             "*/*":
               schema:
-                $ref: "#/components/schemas/v1.DeviceInfoResponse"
+                $ref: "#/components/schemas/v1.ApiSuccessResponse-v1_DeviceInfoResponse"
         "400":
           description: biasanya terkait dengan data yang harus di kirim itu tidak ada atau
             hilang
@@ -408,7 +409,7 @@ paths:
           content:
             "*/*":
               schema:
-                $ref: "#/components/schemas/v1.SendMessageResponse"
+                $ref: "#/components/schemas/v1.ApiSuccessResponse-v1_SendMessageResponse"
         "400":
           description: terkait dengan data yang di kirim tidak lengkap
           content:
@@ -505,6 +506,86 @@ components:
         error:
           example: verbosed error message (keterangan error yang lebih detail)
           type: string
+        success:
+          example: false
+          type: boolean
+      type: object
+    v1.ApiSuccessResponse-v1_AccountCurrentPlansResponse:
+      properties:
+        data:
+          $ref: "#/components/schemas/v1.AccountCurrentPlansResponse"
+        message:
+          example: berhasil melakukan sesuatu
+          type: string
+        success:
+          example: true
+          type: boolean
+      type: object
+    v1.ApiSuccessResponse-v1_AccountInfoResponse:
+      properties:
+        data:
+          $ref: "#/components/schemas/v1.AccountInfoResponse"
+        message:
+          example: berhasil melakukan sesuatu
+          type: string
+        success:
+          example: true
+          type: boolean
+      type: object
+    v1.ApiSuccessResponse-v1_AccountRenewalResponse:
+      properties:
+        data:
+          $ref: "#/components/schemas/v1.AccountRenewalResponse"
+        message:
+          example: berhasil melakukan sesuatu
+          type: string
+        success:
+          example: true
+          type: boolean
+      type: object
+    v1.ApiSuccessResponse-v1_DeviceConnectQRResponse:
+      properties:
+        data:
+          $ref: "#/components/schemas/v1.DeviceConnectQRResponse"
+        message:
+          example: berhasil melakukan sesuatu
+          type: string
+        success:
+          example: true
+          type: boolean
+      type: object
+    v1.ApiSuccessResponse-v1_DeviceDisconnectResponse:
+      properties:
+        data:
+          $ref: "#/components/schemas/v1.DeviceDisconnectResponse"
+        message:
+          example: berhasil melakukan sesuatu
+          type: string
+        success:
+          example: true
+          type: boolean
+      type: object
+    v1.ApiSuccessResponse-v1_DeviceInfoResponse:
+      properties:
+        data:
+          $ref: "#/components/schemas/v1.DeviceInfoResponse"
+        message:
+          example: berhasil melakukan sesuatu
+          type: string
+        success:
+          example: true
+          type: boolean
+      type: object
+    v1.ApiSuccessResponse-v1_SendMessageResponse:
+      properties:
+        data:
+          $ref: "#/components/schemas/v1.SendMessageResponse"
+        message:
+          example: berhasil melakukan sesuatu
+          type: string
+        success:
+          example: true
+          type: boolean
       type: object
     v1.DeviceConnectQRResponse:
       properties:
@@ -519,9 +600,6 @@ components:
       properties:
         device_id:
           example: 01YAUTFIUYASDFIAUSY
-          type: string
-        msg:
-          example: device has successfully disconnected
           type: string
       type: object
     v1.DeviceInfoResponse:
@@ -551,8 +629,5 @@ components:
       properties:
         job_id:
           example: adfs892536
-          type: string
-        msg:
-          example: send message request enqueued!
           type: string
       type: object

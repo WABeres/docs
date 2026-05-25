@@ -1,3 +1,162 @@
 ---
-title: "Pengenalan"
+title: "Perkenalan"
+description: "Dokumentasi lengkap endpoint WABeres API — REST JSON, HMAC-secured."
 ---
+
+WABeres API adalah REST API berbasis JSON yang memungkinkan kamu mengontrol 
+seluruh fungsi platform secara programmatic — mulai dari mengirim pesan, 
+mengelola sesi WhatsApp, hingga manajemen akun dan paket aktif.
+
+## Base URL
+
+```bash
+https://waberes.fredoronan.web.id
+```
+
+## SDK
+
+WABeres menyediakan SDK resmi untuk **JavaScript/TypeScript** yang dapat langsung 
+kamu gunakan tanpa perlu mengimplementasikan signature dan autentikasi secara manual.
+
+<Note>
+  SDK belum dipublikasikan ke npm dan masih dalam tahap pengembangan. Instalasi dan panduan penggunaan tersedia di 
+  repository resmi WABeres. Repository bersifat **open source**, kontribusi di persilahkan.
+</Note>
+
+<Card title="WABeres JS/TS SDK" icon="github" href="https://github.com/WABeres/waberes-js" horizontal>
+  Lihat repository, instalasi, dan contoh penggunaan SDK
+</Card>
+
+Jika kamu lebih memilih menggunakan HTTP client langsung tanpa SDK, semua 
+endpoint tetap dapat diakses seperti biasa menggunakan curl, fetch, axios, 
+atau HTTP client apapun di bahasa pilihanmu.
+
+## Autentikasi
+
+Setiap request ke WABeres API wajib menyertakan tiga header berikut:
+
+| Header | Keterangan |
+|---|---|
+| `X-Api-Key` | API key kamu yang tertera di dokumen PDF |
+| `X-Timestamp` | Unix timestamp saat request dibuat (detik) |
+| `X-Signature` | HMAC-SHA256 signature dari request |
+| `X-Device-Id` | Device ID sesi WhatsApp yang aktif |
+
+<Info>
+  Timestamp yang dikirim tidak boleh berbeda lebih dari **5 menit** dari waktu 
+  server. Request di luar rentang ini akan ditolak sebagai proteksi replay attack.
+</Info>
+
+## Membuat Signature
+
+Signature dibuat menggunakan **HMAC-SHA256** dengan Secret Key kamu sebagai kunci. 
+String yang di-sign adalah gabungan dari method, path, timestamp, dan hash body request:
+
+Urutan dan format string yang di-sign:
+
+| Komponen | Contoh |
+|---|---|
+| `method` | `POST` |
+| `path` | `/api/v1/messages/send` |
+| `timestamp` | `1778577555` |
+| `sha256(body)` | Hash SHA-256 dari raw JSON body request |
+
+Contoh implementasi di Go:
+
+```go
+import (
+    "crypto/hmac"
+    "crypto/sha256"
+    "encoding/hex"
+)
+
+// Hash body terlebih dahulu
+bodyHash := sha256.Sum256([]byte(requestBody))
+bodyHashHex := hex.EncodeToString(bodyHash[:])
+
+// Gabungkan komponen
+signingString := method + path + timestamp + bodyHashHex
+
+// Buat signature
+mac := hmac.New(sha256.New, []byte(secretKey))
+mac.Write([]byte(signingString))
+signature := hex.EncodeToString(mac.Sum(nil))
+```
+
+Contoh implementasi di JavaScript/TypeScript:
+
+```typescript
+import crypto from "crypto";
+
+// Hash body terlebih dahulu
+const bodyHash = crypto
+  .createHash("sha256")
+  .update(JSON.stringify(requestBody))
+  .digest("hex");
+
+// Gabungkan komponen
+const signingString = method + path + timestamp + bodyHash;
+
+// Buat signature
+const signature = crypto
+  .createHmac("sha256", secretKey)
+  .update(signingString)
+  .digest("hex");
+```
+
+<Warning>
+  Pastikan body yang di-hash adalah **raw JSON string** yang sama persis dengan 
+  yang dikirim di request — bukan objek yang di-serialize ulang. Perbedaan 
+  whitespace atau urutan key akan menghasilkan hash yang berbeda dan request 
+  akan ditolak.
+</Warning>
+
+## Format Response
+
+Semua response mengembalikan JSON dengan struktur konsisten:
+
+```json
+{
+  "success": true,
+  "message": "Pesan berhasil dikirim",
+  "data": { }
+}
+```
+
+Untuk response error:
+
+```json
+{
+  "success": false,
+  "error": "pesan error disini",
+  "code": "kode errornya"
+}
+```
+
+## Endpoint yang Tersedia
+
+<CardGroup cols={2}>
+  <Card title="Pesan" icon="paper-plane" href="/id/api/messages/mengirim-pesan-whatsapp">
+    Kirim pesan teks ke nomor WhatsApp tujuan
+  </Card>
+  <Card title="Webhook" icon="webhook" href="/id/api/webhook">
+    Terima pesan masuk secara real-time ke sistemmu
+  </Card>
+  <Card title="Sesi & Device" icon="mobile" href="/id/api/devices/informasi-perangkat">
+    Kelola koneksi WhatsApp — pair, status, dan disconnect
+  </Card>
+  <Card title="Akun & Paket" icon="user" href="/id/api/accounts/informasi-akun-anda">
+    Info akun aktif, sisa kuota, dan renewal paket
+  </Card>
+</CardGroup>
+
+## Rate Limiting
+
+WABeres menerapkan rate limiting per API key. Jika limit terlampaui, 
+server akan mengembalikan status `429 Too Many Requests`. Tunggu beberapa 
+saat sebelum mencoba kembali.
+
+<Tip>
+  Gunakan **exponential backoff** saat menangani error `429` di sistemmu 
+  untuk menghindari request yang menumpuk.
+</Tip>
