@@ -84,7 +84,7 @@ npm run test:coverage
 
 ## Tips
 
-Sangat di sarankan untuk memanggil method/fungsi yang tersedia dalam sebuah `try/catch` seperti berikut:
+Sangat disarankan untuk memanggil method/fungsi yang tersedia dalam sebuah `try/catch` seperti berikut:
 
 ```typescript
 import { APIError, createWABeresClient } from "waberes-js";
@@ -95,7 +95,7 @@ const client = createWABeresClient({
   secretKey: "your_secret_key",
 });
 
-// penggunaan method/fungsinya dengan try/catch sangat di sarankan
+// penggunaan method/fungsinya dengan try/catch sangat disarankan
 try {
     const result = await client.messages.send({
         message: "Test Message created from SDK",
